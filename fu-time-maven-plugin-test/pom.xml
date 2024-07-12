@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.weijunfu</groupId>
+    <artifactId>fu-time-maven-plugin-test</artifactId>
+    <version>0.0.1.${fu.time}</version>
+    <name>fu-time-maven-plugin-test</name>
+    <url>git@github.com:weijunfu/fu-time-maven-plugin.git</url>
+    <description>[Test]This is a Maven plugin used to retrieve time during build time</description>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <encoding>UTF-8</encoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+    </properties>
+
+    <build>
+        <finalName>app-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>io.github.weijunfu</groupId>
+                <artifactId>fu-time-maven-plugin</artifactId>
+                <version>0.0.1</version>
+                <configuration>
+                    <pattern>yyyyMMddHHmm</pattern>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>set fu.time</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>fuTimeMavenPlugin</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Built-By>ijunfu</Built-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <charset>${encoding}</charset>
+                    <encoding>${encoding}</encoding>    <!-- 设置文件编码 -->
+                    <doclint>none</doclint> <!-- 禁用文档检查，避免因严格检查而失败 -->
+                    <failOnError>true</failOnError> <!-- 文档生成失败时，停止构建 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
